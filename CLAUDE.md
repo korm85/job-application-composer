@@ -4,11 +4,13 @@ This is Michael Korenevsky's personal job search knowledge base. All CV generati
 
 ## Start of every session
 
-Read these four files before doing anything else:
-1. `kb/core/facts.md`
-2. `kb/core/voice-and-rules.md`
-3. `kb/core/target-roles.md`
-4. `kb/core/decisions-log.md`
+Read these files in order before doing anything else:
+1. `.claude/memory/user_michael_korenevsky.md` — who Michael is, career arc, targets
+2. `.claude/memory/project_job_search_kb.md` — KB status, pending items, structural corrections
+3. `kb/core/facts.md`
+4. `kb/core/voice-and-rules.md`
+5. `kb/core/target-roles.md`
+6. `kb/core/decisions-log.md`
 
 Full operating manual: `kb/README.md`
 
