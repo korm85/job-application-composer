@@ -18,7 +18,10 @@ Before pushing, ensure the repo contains:
 | All project files | (wherever they are) | local project |
 | `CLAUDE.md` | project root | write/update |
 | Memory files | `.claude/memory/` | `~/.claude/projects/<encoded-path>/memory/` |
+| Custom skills | `.claude/skills/` | `~/.claude/skills/` |
 | `README.md` | project root | write if missing |
+
+**What NOT to include:** `~/.claude/plugins/` are managed packages (installed via plugin system, not committed). Only `~/.claude/skills/` custom skills travel with the project.
 
 ## Step-by-Step
 
@@ -37,11 +40,27 @@ mkdir -p <project-root>/.claude/memory
 cp ~/.claude/projects/<encoded-path>/memory/*.md <project-root>/.claude/memory/
 ```
 
-### 2. Update CLAUDE.md
+### 2. Copy custom skills
+
+```bash
+# Check what custom skills exist
+ls ~/.claude/skills/
+
+# Copy all into repo (they're small markdown files)
+mkdir -p <project-root>/.claude/skills
+cp -r ~/.claude/skills/* <project-root>/.claude/skills/
+```
+
+### 3. Update CLAUDE.md
 
 Add at the top of the "Start of every session" section — memory files must be read **first**, before any project files:
 
 ```markdown
+## Bundled skills
+
+Custom skills are in `.claude/skills/` — load via Skill tool as needed:
+- `<skill-name>` — <one-line description>
+
 ## Start of every session
 
 Read in order:
@@ -50,7 +69,7 @@ Read in order:
 3. [project-specific files...]
 ```
 
-### 3. Create GitHub repo
+### 4. Create GitHub repo
 
 **If `$GITHUB_TOKEN` or `$GH_TOKEN` is set:**
 ```bash
@@ -71,7 +90,7 @@ curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/user | py
 
 **Otherwise:** Ask user to create repo on GitHub and paste the URL.
 
-### 4. Init, commit, push
+### 5. Init, commit, push
 
 ```bash
 git init
@@ -91,8 +110,10 @@ git push -u origin main
 | Mistake | Fix |
 |---|---|
 | Forgetting memory files | Always check `~/.claude/projects/` before pushing |
-| Memory files in CLAUDE.md but not committed | `git add .claude/memory/` explicitly |
-| CLAUDE.md doesn't reference memory files | Add to "Start of every session" section |
+| Forgetting custom skills | Always check `~/.claude/skills/` before pushing |
+| Committing plugins instead of skills | Only `~/.claude/skills/` travels with project; plugins are env-managed |
+| Memory/skills in CLAUDE.md but not committed | `git add .claude/` explicitly |
+| CLAUDE.md doesn't reference memory or skills | Add "Bundled skills" + "Start of every session" sections |
 | Pushing token in remote URL to public repo | Token in remote URL is local only — not committed, safe |
 
 ## Verification
@@ -100,6 +121,7 @@ git push -u origin main
 After pushing, confirm:
 ```bash
 git ls-files | grep ".claude/memory"   # should list memory files
+git ls-files | grep ".claude/skills"   # should list custom skills
 git ls-files | grep "CLAUDE.md"        # should exist
 ```
 
