@@ -2,6 +2,11 @@
 
 This is Michael Korenevsky's personal job search knowledge base. All CV generation, outreach, and application tracking flows through the `kb/` directory.
 
+## Bundled skills
+
+Custom skills are in `.claude/skills/` — load them via the Skill tool as needed:
+- `push-project-to-github` — push this project (or any project) to GitHub with full session parity
+
 ## Start of every session
 
 Read these files in order before doing anything else:
